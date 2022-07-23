@@ -23,8 +23,12 @@ from .dataset import Dataset
 ###############################################################################
 
 def _load_img(path):
-    files = glob.glob(path + '/.*')
-    print("__path: )" + path)
+    path = os.path.normpath(path)
+    if (os.path.isfile(path)):
+        files = [path]
+    else:
+        files = glob.glob(path + '/.*')
+    print("__path: " + path)
     assert len(files) > 0, "Tried to find image file for: %s, but found 0 files" % (path)
     img = util.load_image_raw(files[0])
     if img.dtype != np.float32: # LDR image
@@ -36,6 +40,7 @@ def _load_img(path):
 
 class DatasetNERF(Dataset):
     def __init__(self, cfg_path, FLAGS, examples=None):
+        cfg_path = os.path.normpath(cfg_path)
         self.FLAGS = FLAGS
         self.examples = examples
         self.base_dir = os.path.dirname(cfg_path)
