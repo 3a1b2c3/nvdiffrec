@@ -36,7 +36,7 @@ conda install pytorch torchvision torchaudio cudatoolkit=11.6 -c pytorch
 
 pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116
 
-pip install ninja imageio PyOpenGL glfw xatlas gdown
+pip install ninja imageio==2.9.0 PyOpenGL glfw xatlas gdown
 pip install git+https://github.com/NVlabs/nvdiffrast/
 pip install --global-option="--no-networks" git+https://github.com/NVlabs/tiny-cuda-nn/#subdirectory=bindings/torch imageio_download_bin freeimage
 ```
@@ -124,3 +124,25 @@ cd docker
 
 - Detached docker:
 `docker run --gpus device=1 -d -v /raid:/raid -w=[path to the code] nvdiffrec:v1 python train.py --config configs/bob.json`
+
+
+usage: train.py [-h] [--config CONFIG] [-i ITER] [-b BATCH] [-s SPP]
+                [-l LAYERS] [-r TRAIN_RES TRAIN_RES] [-dr DISPLAY_RES]
+                [-tr TEXTURE_RES TEXTURE_RES] [-di DISPLAY_INTERVAL]
+                [-si SAVE_INTERVAL] [-lr LEARNING_RATE] [-mr MIN_ROUGHNESS]
+                [-mip] [-rt] [-bg {black,white,checker,reference}] 
+                [--loss {logl1,logl2,mse,smape,relmse}] [-o OUT_DIR]
+                [-rm REF_MESH] [-bm BASE_MESH] [--validate VALIDATE  -r TRAIN_RES TRAIN_RES, --train-res TRAIN_RES TRAIN_RES
+  -dr DISPLAY_RES, --display-res DISPLAY_RES
+  -tr TEXTURE_RES TEXTURE_RES, --texture-res TEXTURE_RES TEXTURE_RES
+  -di DISPLAY_INTERVAL, --display-interval DISPLAY_INTERVAL        
+  -si SAVE_INTERVAL, --save-interval SAVE_INTERVAL
+  -lr LEARNING_RATE, --learning-rate LEARNING_RATE
+  -mr MIN_ROUGHNESS, --min-roughness MIN_ROUGHNESS
+  -mip, --custom-mip
+  -rt, --random-textures
+  -bg {black,white,checker,reference}, --background {black,white,checker,reference}
+  --loss {logl1,logl2,mse,smape,relmse}
+  -o OUT_DIR, --out-dir OUT_DIR  -rm REF_MESH, --ref_mesh REF_MESH
+  -bm BASE_MESH, --base-mesh BASE_MESH
+  --validate VALIDATE
