@@ -212,7 +212,7 @@ def render_mesh(
         return accum
 
     assert mesh.t_pos_idx.shape[0] > 0, "Got empty training triangle mesh (unrecoverable discontinuity)"
-    assert background is None or (background.shape[1] == resolution[0] and background.shape[2] == resolution[1])
+    #assert background is None or (background.shape[1] == resolution[0] and background.shape[2] == resolution[1])
 
     full_res = [resolution[0]*spp, resolution[1]*spp]
 

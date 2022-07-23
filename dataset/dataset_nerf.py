@@ -23,7 +23,8 @@ from .dataset import Dataset
 ###############################################################################
 
 def _load_img(path):
-    files = glob.glob(path + '.*')
+    files = glob.glob(path + '/.*')
+    print("__path: )" + path)
     assert len(files) > 0, "Tried to find image file for: %s, but found 0 files" % (path)
     img = util.load_image_raw(files[0])
     if img.dtype != np.float32: # LDR image
@@ -44,7 +45,10 @@ class DatasetNERF(Dataset):
         self.n_images = len(self.cfg['frames'])
 
         # Determine resolution & aspect ratio
-        self.resolution = _load_img(os.path.join(self.base_dir, self.cfg['frames'][0]['file_path'])).shape[0:2]
+        p = os.path.normpath(os.path.join(self.base_dir, self.cfg['frames'][0]['file_path']))
+        print(self.FLAGS.local_rank)
+        print("\npath: " + str(os.path.exists(p)) + p)
+        self.resolution = _load_img(p).shape[0:2]
         self.aspect = self.resolution[1] / self.resolution[0]
 
         if self.FLAGS.local_rank == 0:

@@ -32,11 +32,13 @@ Below is an example with Cuda 11.3
 ```
 conda create -n dmodel python=3.9
 activate dmodel
-conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch
+conda install pytorch torchvision torchaudio cudatoolkit=11.6 -c pytorch
+
+pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116
+
 pip install ninja imageio PyOpenGL glfw xatlas gdown
 pip install git+https://github.com/NVlabs/nvdiffrast/
-pip install --global-option="--no-networks" git+https://github.com/NVlabs/tiny-cuda-nn/#subdirectory=bindings/torch
-imageio_download_bin freeimage
+pip install --global-option="--no-networks" git+https://github.com/NVlabs/tiny-cuda-nn/#subdirectory=bindings/torch imageio_download_bin freeimage
 ```
 
 ### Every new command prompt
@@ -61,6 +63,8 @@ using [PyTorch DDP](https://pytorch.org/docs/stable/elastic/run.html#launcher-ap
 ```
 torchrun --nproc_per_node=4 train.py --config configs/bob.json
 ```
+//////////
+ py train.py --config .\configs\nerd_ehead.json
 
 Below, we show the starting point and the final result. References to the right.
 

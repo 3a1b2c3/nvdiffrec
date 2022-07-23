@@ -540,7 +540,10 @@ if __name__ == "__main__":
     if FLAGS.display_res is None:
         FLAGS.display_res = FLAGS.train_res
     if FLAGS.out_dir is None:
-        FLAGS.out_dir = 'out/cube_%d' % (FLAGS.train_res)
+        if isinstance(FLAGS.train_res, list): 
+            FLAGS.out_dir = 'out/cube_%d' % (FLAGS.train_res[0])
+        else:
+            FLAGS.out_dir = 'out/cube_%d' % (FLAGS.train_res)
     else:
         FLAGS.out_dir = 'out/' + FLAGS.out_dir
 
@@ -558,18 +561,21 @@ if __name__ == "__main__":
     # ==============================================================================================
     #  Create data pipeline
     # ==============================================================================================
-    if os.path.splitext(FLAGS.ref_mesh)[1] == '.obj':
-        ref_mesh         = mesh.load_mesh(FLAGS.ref_mesh, FLAGS.mtl_override)
-        dataset_train    = DatasetMesh(ref_mesh, glctx, RADIUS, FLAGS, validate=False)
-        dataset_validate = DatasetMesh(ref_mesh, glctx, RADIUS, FLAGS, validate=True)
-    elif os.path.isdir(FLAGS.ref_mesh):
-        if os.path.isfile(os.path.join(FLAGS.ref_mesh, 'poses_bounds.npy')):
-            dataset_train    = DatasetLLFF(FLAGS.ref_mesh, FLAGS, examples=(FLAGS.iter+1)*FLAGS.batch)
-            dataset_validate = DatasetLLFF(FLAGS.ref_mesh, FLAGS)
-        elif os.path.isfile(os.path.join(FLAGS.ref_mesh, 'transforms_train.json')):
-            dataset_train    = DatasetNERF(os.path.join(FLAGS.ref_mesh, 'transforms_train.json'), FLAGS, examples=(FLAGS.iter+1)*FLAGS.batch)
-            dataset_validate = DatasetNERF(os.path.join(FLAGS.ref_mesh, 'transforms_test.json'), FLAGS)
-
+    print("FLAGS.ref_mesh", FLAGS.ref_mesh)
+    if FLAGS.ref_mesh:
+        if os.path.splitext(FLAGS.ref_mesh)[1] == '.obj':
+            ref_mesh         = mesh.load_mesh(FLAGS.ref_mesh, FLAGS.mtl_override)
+            dataset_train    = DatasetMesh(ref_mesh, glctx, RADIUS, FLAGS, validate=False)
+            dataset_validate = DatasetMesh(ref_mesh, glctx, RADIUS, FLAGS, validate=True)
+        elif os.path.isdir(FLAGS.ref_mesh):
+            if os.path.isfile(os.path.join(FLAGS.ref_mesh, 'poses_bounds.npy')):
+                dataset_train    = DatasetLLFF(FLAGS.ref_mesh, FLAGS, examples=(FLAGS.iter+1)*FLAGS.batch)
+                dataset_validate = DatasetLLFF(FLAGS.ref_mesh, FLAGS)
+            elif os.path.isfile(os.path.join(FLAGS.ref_mesh, 'transforms_train.json')):
+                dataset_train    = DatasetNERF(os.path.join(FLAGS.ref_mesh, 'transforms_train.json'), FLAGS, examples=(FLAGS.iter+1)*FLAGS.batch)
+                dataset_validate = DatasetNERF(os.path.join(FLAGS.ref_mesh, 'transforms_test.json'), FLAGS)
+    dataset_train    = DatasetNERF(os.path.join(FLAGS.ref_mesh, 'transforms_train.json'), FLAGS, examples=(FLAGS.iter+1)*FLAGS.batch)
+    dataset_validate = DatasetNERF(os.path.join(FLAGS.ref_mesh, 'transforms_test.json'), FLAGS)
     # ==============================================================================================
     #  Create env light with trainable parameters
     # ==============================================================================================
@@ -591,6 +597,7 @@ if __name__ == "__main__":
         mat = initial_guess_material(geometry, True, FLAGS)
     
         # Run optimization
+        print("dataset_train ", dataset_train)
         geometry, mat = optimize_mesh(glctx, geometry, mat, lgt, dataset_train, dataset_validate, 
                         FLAGS, pass_idx=0, pass_name="dmtet_pass1", optimize_light=FLAGS.learn_light)
 
@@ -608,11 +615,12 @@ if __name__ == "__main__":
         lgt = lgt.clone()
         geometry = DLMesh(base_mesh, FLAGS)
 
-        if FLAGS.local_rank == 0:
+        if True or FLAGS.local_rank == 0:
             # Dump mesh for debugging.
             os.makedirs(os.path.join(FLAGS.out_dir, "dmtet_mesh"), exist_ok=True)
             obj.write_obj(os.path.join(FLAGS.out_dir, "dmtet_mesh/"), base_mesh)
             light.save_env_map(os.path.join(FLAGS.out_dir, "dmtet_mesh/probe.hdr"), lgt)
+            print("Lights to :"  + FLAGS.out_dir)
 
         # ==============================================================================================
         #  Pass 2: Train with fixed topology (mesh)

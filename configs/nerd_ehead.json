@@ -5,7 +5,7 @@
     "save_interval": 100,
     "texture_res": [ 2048, 2048 ],
     "train_res": [512, 512],
-    "batch": 8,
+    "batch": 2,
     "learning_rate": [0.03, 0.03],
     "kd_min" : [0.03, 0.03, 0.03],
     "kd_max" : [0.8, 0.8, 0.8],
