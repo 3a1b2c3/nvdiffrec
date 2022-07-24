@@ -608,7 +608,7 @@ if __name__ == "__main__":
         lgt = lgt.clone()
         geometry = DLMesh(base_mesh, FLAGS)
 
-        if FLAGS.local_rank == 0:
+        if True or FLAGS.local_rank == 0:
             # Dump mesh for debugging.
             os.makedirs(os.path.join(FLAGS.out_dir, "dmtet_mesh"), exist_ok=True)
             obj.write_obj(os.path.join(FLAGS.out_dir, "dmtet_mesh/"), base_mesh)
@@ -643,7 +643,7 @@ if __name__ == "__main__":
     # ==============================================================================================
     #  Dump output
     # ==============================================================================================
-    if FLAGS.local_rank == 0:
+    if True or FLAGS.local_rank == 0:
         final_mesh = geometry.getMesh(mat)
         os.makedirs(os.path.join(FLAGS.out_dir, "mesh"), exist_ok=True)
         obj.write_obj(os.path.join(FLAGS.out_dir, "mesh/"), final_mesh)

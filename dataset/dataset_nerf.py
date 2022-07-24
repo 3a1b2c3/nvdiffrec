@@ -23,6 +23,7 @@ from .dataset import Dataset
 ###############################################################################
 
 def _load_img(path):
+    path = os.path.normpath(path)
     files = glob.glob(path + '.*')
     assert len(files) > 0, "Tried to find image file for: %s, but found 0 files" % (path)
     img = util.load_image_raw(files[0])

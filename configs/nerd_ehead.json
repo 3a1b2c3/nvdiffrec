@@ -15,6 +15,6 @@
     "mesh_scale" : 2.5,
     "camera_space_light" : true,
     "background" : "white",
-    "display" : [{"bsdf":"kd"}, {"bsdf":"ks"}, {"bsdf" : "normal"}],
+    "display" : [{"latlong" : true}, {"bsdf":"kd"}, {"bsdf":"ks"}, {"bsdf" : "normal"}],
     "out_dir": "nerd_ehead"
 }

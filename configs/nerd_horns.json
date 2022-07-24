@@ -1,5 +1,5 @@
 {
-    "ref_mesh": "data/nerd/moldGoldCape_rescaled",
+    "ref_mesh": "data/nerd/horns_rescaled",
     "random_textures": true,
     "iter": 5000,
     "save_interval": 100,
@@ -15,5 +15,5 @@
     "ks_max" : [0, 1.0, 1.0],
     "background" : "white",
     "display" : [{"latlong" : true}, {"bsdf":"kd"}, {"bsdf":"ks"}, {"bsdf" : "normal"}],
-    "out_dir": "nerd_gold"
+    "out_dir": "nerd_horns"
 }

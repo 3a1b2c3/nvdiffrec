@@ -15,5 +15,5 @@
     "ks_max" : [0, 1.0, 1.0],
     "background" : "white",
     "display" : [{"latlong" : true}, {"bsdf":"kd"}, {"bsdf":"ks"}, {"bsdf" : "normal"}],
-    "out_dir": "nerd_gold"
+    "out_dir": "nerd_gold+no_mask"
 }
