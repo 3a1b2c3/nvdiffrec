@@ -561,7 +561,6 @@ if __name__ == "__main__":
     # ==============================================================================================
     #  Create data pipeline
     # ==============================================================================================
-    print("FLAGS.ref_mesh", FLAGS.ref_mesh)
     if FLAGS.ref_mesh:
         if os.path.splitext(FLAGS.ref_mesh)[1] == '.obj':
             ref_mesh         = mesh.load_mesh(FLAGS.ref_mesh, FLAGS.mtl_override)
@@ -597,7 +596,6 @@ if __name__ == "__main__":
         mat = initial_guess_material(geometry, True, FLAGS)
     
         # Run optimization
-        print("dataset_train ", dataset_train)
         geometry, mat = optimize_mesh(glctx, geometry, mat, lgt, dataset_train, dataset_validate, 
                         FLAGS, pass_idx=0, pass_name="dmtet_pass1", optimize_light=FLAGS.learn_light)
 
@@ -615,7 +613,7 @@ if __name__ == "__main__":
         lgt = lgt.clone()
         geometry = DLMesh(base_mesh, FLAGS)
 
-        if True or FLAGS.local_rank == 0:
+        if FLAGS.local_rank == 0:
             # Dump mesh for debugging.
             os.makedirs(os.path.join(FLAGS.out_dir, "dmtet_mesh"), exist_ok=True)
             obj.write_obj(os.path.join(FLAGS.out_dir, "dmtet_mesh/"), base_mesh)
@@ -651,7 +649,7 @@ if __name__ == "__main__":
     # ==============================================================================================
     #  Dump output
     # ==============================================================================================
-    if True or FLAGS.local_rank == 0:
+    if FLAGS.local_rank == 0:
         final_mesh = geometry.getMesh(mat)
         os.makedirs(os.path.join(FLAGS.out_dir, "mesh"), exist_ok=True)
         obj.write_obj(os.path.join(FLAGS.out_dir, "mesh/"), final_mesh)
