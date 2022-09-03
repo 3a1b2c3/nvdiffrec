@@ -618,7 +618,6 @@ if __name__ == "__main__":
             os.makedirs(os.path.join(FLAGS.out_dir, "dmtet_mesh"), exist_ok=True)
             obj.write_obj(os.path.join(FLAGS.out_dir, "dmtet_mesh/"), base_mesh)
             light.save_env_map(os.path.join(FLAGS.out_dir, "dmtet_mesh/probe.hdr"), lgt)
-            print("Lights to :"  + FLAGS.out_dir)
 
         # ==============================================================================================
         #  Pass 2: Train with fixed topology (mesh)
