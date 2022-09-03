@@ -651,7 +651,7 @@ if __name__ == "__main__":
     # ==============================================================================================
     #  Dump output
     # ==============================================================================================
-    if FLAGS.local_rank == 0:
+    if True or FLAGS.local_rank == 0:
         final_mesh = geometry.getMesh(mat)
         os.makedirs(os.path.join(FLAGS.out_dir, "mesh"), exist_ok=True)
         obj.write_obj(os.path.join(FLAGS.out_dir, "mesh/"), final_mesh)

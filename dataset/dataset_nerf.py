@@ -28,7 +28,6 @@ def _load_img(path):
         files = [path]
     else:
         files = glob.glob(path + '/.*')
-    print("__path: " + path)
     assert len(files) > 0, "Tried to find image file for: %s, but found 0 files" % (path)
     img = util.load_image_raw(files[0])
     if img.dtype != np.float32: # LDR image
